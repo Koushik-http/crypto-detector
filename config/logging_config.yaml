@@ -1,0 +1,81 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  standard:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  error:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: standard
+    stream: ext://sys.stdout
+
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: standard
+    filename: logs/crypto_fraud_detection.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 3
+
+  error_file:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: error
+    filename: logs/error.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 3
+
+loggers:
+  '':
+    level: INFO
+    handlers: [console, file, error_file]
+    propagate: true
+
+  app:
+    level: DEBUG
+    handlers: [console, file, error_file]
+    propagate: false
+
+  app.api:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+
+  app.services:
+    level: DEBUG
+    handlers: [file, error_file]
+    propagate: false
+
+  app.db:
+    level: INFO
+    handlers: [file, error_file]
+    propagate: false
+
+  src.data:
+    level: DEBUG
+    handlers: [file, error_file]
+    propagate: false
+
+  src.features:
+    level: DEBUG
+    handlers: [file, error_file]
+    propagate: false
+
+  src.models:
+    level: INFO
+    handlers: [file, error_file]
+    propagate: false
+
+  src.visualization:
+    level: INFO
+    handlers: [file]
+    propagate: false
+
+root:
+  level: INFO
+  handlers: [console, file, error_file]
